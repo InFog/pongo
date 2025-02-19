@@ -1,5 +1,5 @@
 run:
-	CGO_ENABLED=1 go run main.go
+	CGO_ENABLED=1 go run .
 
 test:
 	CGO_ENABLED=1 go test -v
