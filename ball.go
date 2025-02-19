@@ -18,7 +18,7 @@ type Ball struct {
 func NewBall() Ball {
 	return Ball{
 		x:      0,
-		y:      float32(rand.Intn(int(canvasHeight))),
+		y:      float32(rand.Intn(int(canvasHeight))), // TODO remove global canvasHeight
 		radius: 5,
 		dx:     1,
 		dy:     1,
