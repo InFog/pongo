@@ -28,6 +28,13 @@ func (g *Game) Update() error {
 	g.keys = inpututil.AppendPressedKeys(g.keys[:0])
 	g.ball.Move()
 	g.paddle.Move(g.keys)
+
+	g.ball.CheckPaddleCollision(g.paddle)
+
+	if g.ball.CheckOutOfBounds(canvasWidth) {
+		g.ball = NewBall()
+	}
+
 	return nil
 }
 
@@ -43,15 +50,7 @@ func main() {
 	ebiten.SetWindowTitle("Pon-Go!")
 
 	g := Game{
-		ball: Ball{
-			x:      0,
-			y:      0,
-			radius: 5,
-			dx:     1,
-			dy:     1,
-			xspeed: 6,
-			yspeed: 3,
-		},
+		ball: NewBall(),
 		paddle: Paddle{
 			x:      canvasWidth - 10,
 			y:      (canvasHeight / 2) - 40,
