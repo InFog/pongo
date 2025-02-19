@@ -56,13 +56,16 @@ func (b *Ball) CheckOutOfBounds(sw float32) bool {
 	return false
 }
 
-func (b *Ball) CheckPaddleCollision(p Paddle) {
+func (b *Ball) CheckPaddleCollision(p Paddle) bool {
 	bw := b.x + (b.radius * 2)
 
 	if bw >= p.x {
 		bh := b.y + (b.radius * 2)
 		if bh >= p.y && bh <= p.y+p.height {
 			b.dx *= -1
+			return true
 		}
 	}
+
+	return false
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -14,9 +15,11 @@ const (
 )
 
 type Game struct {
-	ball   Ball
-	paddle Paddle
-	keys   []ebiten.Key
+	ball      Ball
+	paddle    Paddle
+	keys      []ebiten.Key
+	score     int
+	highScore int
 }
 
 // This is more useful when the window is resizeable.
@@ -29,17 +32,26 @@ func (g *Game) Update() error {
 	g.ball.Move()
 	g.paddle.Move(g.keys)
 
-	g.ball.CheckPaddleCollision(g.paddle)
+	if g.ball.CheckPaddleCollision(g.paddle) {
+		g.score++
+
+		if g.score > g.highScore {
+			g.highScore = g.score
+		}
+
+		g.ball.xspeed++
+	}
 
 	if g.ball.CheckOutOfBounds(canvasWidth) {
 		g.ball = NewBall()
+		g.score = 0
 	}
 
 	return nil
 }
 
 func (g *Game) Draw(s *ebiten.Image) {
-	ebitenutil.DebugPrint(s, "Pon-Go!")
+	ebitenutil.DebugPrint(s, fmt.Sprintf("Pon-Go!\nScore: %d\nHigh Score: %d", g.score, g.highScore))
 
 	g.paddle.Draw(s)
 	g.ball.Draw(s)
@@ -57,6 +69,8 @@ func main() {
 			width:  10,
 			height: 80,
 		},
+		score:     0,
+		highScore: 0,
 	}
 
 	if err := ebiten.RunGame(&g); err != nil {
