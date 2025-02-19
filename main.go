@@ -1,13 +1,11 @@
 package main
 
 import (
-	"image/color"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
-	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 const (
@@ -36,8 +34,8 @@ func (g *Game) Update() error {
 func (g *Game) Draw(s *ebiten.Image) {
 	ebitenutil.DebugPrint(s, "Pon-Go!")
 
-	vector.DrawFilledCircle(s, g.ball.x+g.ball.radius, g.ball.y+g.ball.radius, g.ball.radius, color.White, true)
-	vector.DrawFilledRect(s, g.paddle.x, g.paddle.y, g.paddle.width, g.paddle.height, color.White, true)
+	g.paddle.Draw(s)
+	g.ball.Draw(s)
 }
 
 func main() {

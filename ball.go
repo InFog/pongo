@@ -1,5 +1,12 @@
 package main
 
+import (
+	"image/color"
+
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/vector"
+)
+
 type Ball struct {
 	x, y           float32
 	radius         float32
@@ -22,4 +29,8 @@ func (b *Ball) Move() {
 	if b.y < 0 || b.y+(b.radius*2) > canvasHeight {
 		b.dy *= -1
 	}
+}
+
+func (b *Ball) Draw(s *ebiten.Image) {
+	vector.DrawFilledCircle(s, b.x+b.radius, b.y+b.radius, b.radius, color.White, true)
 }
