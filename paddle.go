@@ -15,10 +15,14 @@ type Paddle struct {
 
 func (p *Paddle) Move(keys []ebiten.Key) {
 	if slices.Contains(keys, ebiten.KeyArrowDown) {
-		p.y += 5
+		if (p.y + p.height) < canvasHeight {
+			p.y += 5
+		}
 	}
 	if slices.Contains(keys, ebiten.KeyArrowUp) {
-		p.y -= 5
+		if p.y > 0 {
+			p.y -= 5
+		}
 	}
 }
 
