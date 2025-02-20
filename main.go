@@ -39,7 +39,9 @@ func (g *Game) Update() error {
 			g.highScore = g.score
 		}
 
-		g.ball.xspeed++
+		if int(g.ball.xspeed)%3 == 0 {
+			g.ball.xspeed++
+		}
 	}
 
 	if g.ball.CheckOutOfBounds(canvasWidth) {
