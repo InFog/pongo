@@ -17,7 +17,11 @@ jobs:
       uses: actions/setup-go@v4
       with:
         go-version: '1.24.0'
+
     - name: Install dependencies
-      run: go mod tidy
+      run: |
+        sudo apt install gcc libc6-dev libgl1-mesa-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev libxxf86vm-dev libasound2-dev pkg-config
+        go mod tidy
+
     - name: Test
       run: make test
