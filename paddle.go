@@ -15,10 +15,12 @@ type Paddle struct {
 }
 
 func NewPaddle(canvasWidth float32, canvasHeight float32) Paddle {
+	var w float32 = 10
+
 	return Paddle{
-		x:      canvasWidth - 10,
+		x:      canvasWidth - w,
 		y:      (canvasHeight / 2) - 40,
-		width:  10,
+		width:  w,
 		height: 80,
 		speed:  5,
 	}

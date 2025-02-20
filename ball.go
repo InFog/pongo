@@ -58,6 +58,23 @@ func (b *Ball) CheckPaddleCollision(p Paddle) bool {
 
 	if bw >= p.x {
 		bh := b.y + (b.radius * 2)
+
+		// Hitting the paddle in the top
+		if bh > p.y && b.y < p.y {
+			b.dx *= -1
+			b.dy *= -1
+			return true
+		}
+
+		ph := p.y + p.height
+
+		// Hitting the paddle in the bottom
+		if b.y < (ph) && bh > ph {
+			b.dx *= -1
+			b.dy *= -1
+			return true
+		}
+
 		if bh >= p.y && bh <= p.y+p.height {
 			b.dx *= -1
 			return true
