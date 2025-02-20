@@ -11,17 +11,28 @@ import (
 type Paddle struct {
 	x, y          float32
 	width, height float32
+	speed         float32
+}
+
+func NewPaddle(canvasWidth float32, canvasHeight float32) Paddle {
+	return Paddle{
+		x:      canvasWidth - 10,
+		y:      (canvasHeight / 2) - 40,
+		width:  10,
+		height: 80,
+		speed:  5,
+	}
 }
 
 func (p *Paddle) Move(keys []ebiten.Key) {
 	if slices.Contains(keys, ebiten.KeyArrowDown) {
 		if (p.y + p.height) < canvasHeight {
-			p.y += 5
+			p.y += p.speed
 		}
 	}
 	if slices.Contains(keys, ebiten.KeyArrowUp) {
 		if p.y > 0 {
-			p.y -= 5
+			p.y -= p.speed
 		}
 	}
 }

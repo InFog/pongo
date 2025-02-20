@@ -64,13 +64,8 @@ func main() {
 	ebiten.SetWindowTitle("Pon-Go!")
 
 	g := Game{
-		ball: NewBall(),
-		paddle: Paddle{
-			x:      canvasWidth - 10,
-			y:      (canvasHeight / 2) - 40,
-			width:  10,
-			height: 80,
-		},
+		ball:      NewBall(),
+		paddle:    NewPaddle(canvasWidth, canvasHeight),
 		score:     0,
 		highScore: 0,
 	}
