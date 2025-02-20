@@ -31,15 +31,12 @@ func (b *Ball) Move() {
 	b.x += b.dx * b.xspeed
 	b.y += b.dy * b.yspeed
 
-	ballRX := b.x + (b.radius * 2)
+	ballRY := b.y + (b.radius * 2)
 
-	if b.x < 0 || ballRX > canvasWidth {
+	if b.x < 0 {
 		b.dx *= -1
-		if ballRX > canvasWidth {
-			b.x = canvasWidth + (canvasWidth - ballRX)
-		}
 	}
-	if b.y < 0 || b.y+(b.radius*2) > canvasHeight {
+	if b.y < 0 || ballRY > canvasHeight {
 		b.dy *= -1
 	}
 }
