@@ -24,4 +24,4 @@ jobs:
         go mod tidy
 
     - name: Test
-      run: make test
+      run: DISPLAY=":0" make test
