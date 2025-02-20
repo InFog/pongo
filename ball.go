@@ -15,10 +15,10 @@ type Ball struct {
 	xspeed, yspeed float32
 }
 
-func NewBall() Ball {
+func NewBall(canvasHeight float32) Ball {
 	return Ball{
 		x:      0,
-		y:      float32(rand.Intn(int(canvasHeight))), // TODO remove global canvasHeight
+		y:      float32(rand.Intn(int(canvasHeight))),
 		radius: 5,
 		dx:     1,
 		dy:     1,
@@ -27,16 +27,16 @@ func NewBall() Ball {
 	}
 }
 
-func (b *Ball) Move() {
+func (b *Ball) Move(canvasHeight float32) {
 	b.x += b.dx * b.xspeed
 	b.y += b.dy * b.yspeed
 
 	ballRY := b.y + (b.radius * 2)
 
-	if b.x < 0 {
+	if b.x <= 0 {
 		b.dx *= -1
 	}
-	if b.y < 0 || ballRY > canvasHeight {
+	if b.y <= 0 || ballRY > canvasHeight {
 		b.dy *= -1
 	}
 }

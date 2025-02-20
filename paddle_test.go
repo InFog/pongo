@@ -15,7 +15,7 @@ func TestMovePaddleUp(t *testing.T) {
 
 	keys := []ebiten.Key{ebiten.KeyArrowUp}
 
-	p.Move(keys)
+	p.Move(320, keys)
 
 	if p.y != 115 {
 		t.Error("Expected Paddle to be at Y position (120), got", p.y)
@@ -31,7 +31,7 @@ func TestMovePaddleDown(t *testing.T) {
 
 	keys := []ebiten.Key{ebiten.KeyArrowDown}
 
-	p.Move(keys)
+	p.Move(320, keys)
 
 	if p.y != 125 {
 		t.Error("Expected Paddle to be at Y position (120), got", p.y)

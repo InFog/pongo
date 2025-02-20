@@ -29,8 +29,8 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 
 func (g *Game) Update() error {
 	g.keys = inpututil.AppendPressedKeys(g.keys[:0])
-	g.ball.Move()
-	g.paddle.Move(g.keys)
+	g.ball.Move(canvasHeight)
+	g.paddle.Move(canvasHeight, g.keys)
 
 	if g.ball.CheckPaddleCollision(g.paddle) {
 		g.score++
@@ -45,7 +45,7 @@ func (g *Game) Update() error {
 	}
 
 	if g.ball.CheckOutOfBounds(canvasWidth) {
-		g.ball = NewBall()
+		g.ball = NewBall(canvasHeight)
 		g.score = 0
 	}
 
@@ -64,7 +64,7 @@ func main() {
 	ebiten.SetWindowTitle("Pon-Go!")
 
 	g := Game{
-		ball:      NewBall(),
+		ball:      NewBall(canvasHeight),
 		paddle:    NewPaddle(canvasWidth, canvasHeight),
 		score:     0,
 		highScore: 0,

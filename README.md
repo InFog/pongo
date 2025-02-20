@@ -8,4 +8,4 @@ For me to learn more about the language.
 
 ## TODO
 
-- [ ] Make the objects not relly on global variables (canvasWidth and canvasHeight)
+- [X] Make the objects not relly on global variables (canvasWidth and canvasHeight)

@@ -26,7 +26,7 @@ func NewPaddle(canvasWidth float32, canvasHeight float32) Paddle {
 	}
 }
 
-func (p *Paddle) Move(keys []ebiten.Key) {
+func (p *Paddle) Move(canvasHeight float32, keys []ebiten.Key) {
 	if slices.Contains(keys, ebiten.KeyArrowDown) {
 		if (p.y + p.height) < canvasHeight {
 			p.y += p.speed
