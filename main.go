@@ -2,11 +2,13 @@ package main
 
 import (
 	"fmt"
+	"image/color"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 const (
@@ -16,10 +18,26 @@ const (
 
 type Game struct {
 	ball      Ball
+	echoes    []Echo
 	paddle    Paddle
 	keys      []ebiten.Key
 	score     int
 	highScore int
+}
+
+type Echo struct {
+	x, y   float32
+	radius float32
+}
+
+func (e *Echo) Draw(s *ebiten.Image) {
+	vector.StrokeCircle(s, e.x+e.radius, e.y+e.radius, e.radius, 1, color.White, true)
+}
+
+func (e *Echo) Update() {
+	e.radius++
+	e.x--
+	e.y--
 }
 
 // This is more useful when the window is resizeable.
@@ -30,6 +48,24 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 func (g *Game) Update() error {
 	g.keys = inpututil.AppendPressedKeys(g.keys[:0])
 	g.ball.Move(canvasHeight)
+	var newEchoes []Echo = []Echo{}
+
+	for i := len(g.echoes) - 1; i >= 0; i-- {
+		g.echoes[i].Update()
+
+		if g.echoes[i].radius < 40 {
+			newEchoes = append(newEchoes, g.echoes[i])
+		}
+	}
+
+	g.echoes = newEchoes
+
+	if g.ball.CheckWallCollision() {
+		g.echoes = append(g.echoes, Echo{
+			g.ball.x, g.ball.y, g.ball.radius,
+		})
+	}
+
 	g.paddle.Move(canvasHeight, g.keys)
 
 	if g.ball.CheckPaddleCollision(g.paddle) {
@@ -42,6 +78,10 @@ func (g *Game) Update() error {
 		if int(g.ball.xspeed)%3 == 0 {
 			g.ball.xspeed++
 		}
+
+		g.echoes = append(g.echoes, Echo{
+			g.ball.x, g.ball.y, g.ball.radius,
+		})
 	}
 
 	if g.ball.CheckOutOfBounds(canvasWidth) {
@@ -57,6 +97,10 @@ func (g *Game) Draw(s *ebiten.Image) {
 
 	g.paddle.Draw(s)
 	g.ball.Draw(s)
+
+	for _, echo := range g.echoes {
+		echo.Draw(s)
+	}
 }
 
 func main() {

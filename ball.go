@@ -30,19 +30,25 @@ func NewBall(canvasHeight float32) Ball {
 func (b *Ball) Move(canvasHeight float32) {
 	b.x += b.dx * b.xspeed
 	b.y += b.dy * b.yspeed
-
-	ballRY := b.y + (b.radius * 2)
-
-	if b.x <= 0 {
-		b.dx *= -1
-	}
-	if b.y <= 0 || ballRY > canvasHeight {
-		b.dy *= -1
-	}
 }
 
 func (b *Ball) Draw(s *ebiten.Image) {
 	vector.DrawFilledCircle(s, b.x+b.radius, b.y+b.radius, b.radius, color.White, true)
+}
+
+func (b *Ball) CheckWallCollision() bool {
+	ballRY := b.y + (b.radius * 2)
+
+	if b.x <= 0 {
+		b.dx *= -1
+		return true
+	}
+	if b.y <= 0 || ballRY > canvasHeight {
+		b.dy *= -1
+		return true
+	}
+
+	return false
 }
 
 func (b *Ball) CheckOutOfBounds(sw float32) bool {
