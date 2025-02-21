@@ -20,7 +20,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        sudo apt install gcc xserver-xorg alsa-lib libxcursor libxi libxinerama libxrandr mesa-libs mesa-utils libc6-dev libgl1-mesa-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev libxxf86vm-dev libasound2-dev pkg-config
+        sudo apt install gcc xserver-xorg libxcursor1 libxi6 libxinerama1 libxrandr2 mesa-utils libc6-dev libgl1-mesa-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev libxxf86vm-dev libasound2-dev pkg-config
         go mod tidy
 
     - name: Test
