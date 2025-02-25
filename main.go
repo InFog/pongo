@@ -2,13 +2,11 @@ package main
 
 import (
 	"fmt"
-	"image/color"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
-	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 const (
@@ -23,21 +21,6 @@ type Game struct {
 	keys      []ebiten.Key
 	score     int
 	highScore int
-}
-
-type Echo struct {
-	x, y   float32
-	radius float32
-}
-
-func (e *Echo) Draw(s *ebiten.Image) {
-	vector.StrokeCircle(s, e.x+e.radius, e.y+e.radius, e.radius, 1, color.White, true)
-}
-
-func (e *Echo) Update() {
-	e.radius++
-	e.x--
-	e.y--
 }
 
 // This is more useful when the window is resizeable.
