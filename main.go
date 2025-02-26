@@ -2,11 +2,14 @@ package main
 
 import (
 	"fmt"
+	"image/color"
 	"log"
+	"math/rand"
 
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/hajimehoshi/ebiten/v2/vector"
 )
 
 const (
@@ -14,9 +17,35 @@ const (
 	windowAspectRatio                 = 2
 )
 
+type Obstacle struct {
+	x, y          float32
+	width, height float32
+	speed         float32
+}
+
+func (o *Obstacle) Move() {
+	o.y += o.speed
+}
+
+func (o *Obstacle) Draw(s *ebiten.Image) {
+	vector.DrawFilledRect(s, o.x, o.y, o.width, o.height, color.White, true)
+}
+
+func NewObstacle() Obstacle {
+	var height float32 = float32(rand.Intn(40) + 10)
+	var x float32 = float32(rand.Intn(100) + 100)
+	var speed float32 = float32(rand.Intn(2) + 1)
+	return Obstacle{
+		x: x, y: -height,
+		width: 10, height: height,
+		speed: speed,
+	}
+}
+
 type Game struct {
 	ball      Ball
 	echoes    []Echo
+	obstacles []Obstacle
 	paddle    Paddle
 	keys      []ebiten.Key
 	score     int
@@ -32,6 +61,7 @@ func (g *Game) Update() error {
 	g.keys = inpututil.AppendPressedKeys(g.keys[:0])
 	g.ball.Move(canvasHeight)
 	var newEchoes []Echo = []Echo{}
+	var newObstacles []Obstacle = []Obstacle{}
 
 	for i := len(g.echoes) - 1; i >= 0; i-- {
 		g.echoes[i].Update()
@@ -41,7 +71,26 @@ func (g *Game) Update() error {
 		}
 	}
 
+	var lastObstacleY float32 = canvasHeight
+
+	for i := len(g.obstacles) - 1; i >= 0; i-- {
+		g.obstacles[i].Move()
+
+		if g.obstacles[i].y < canvasHeight {
+			newObstacles = append(newObstacles, g.obstacles[i])
+		}
+
+		if g.obstacles[i].y < lastObstacleY {
+			lastObstacleY = g.obstacles[i].y
+		}
+	}
+
+	if lastObstacleY > canvasHeight/2 {
+		newObstacles = append(newObstacles, NewObstacle())
+	}
+
 	g.echoes = newEchoes
+	g.obstacles = newObstacles
 
 	if g.ball.CheckWallCollision() {
 		g.echoes = append(g.echoes, Echo{
@@ -81,8 +130,12 @@ func (g *Game) Draw(s *ebiten.Image) {
 	g.paddle.Draw(s)
 	g.ball.Draw(s)
 
-	for _, echo := range g.echoes {
-		echo.Draw(s)
+	for _, e := range g.echoes {
+		e.Draw(s)
+	}
+
+	for _, o := range g.obstacles {
+		o.Draw(s)
 	}
 }
 
@@ -93,6 +146,7 @@ func main() {
 	g := Game{
 		ball:      NewBall(canvasHeight),
 		paddle:    NewPaddle(canvasWidth, canvasHeight),
+		obstacles: []Obstacle{NewObstacle()},
 		score:     0,
 		highScore: 0,
 	}
