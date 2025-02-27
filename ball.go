@@ -98,7 +98,6 @@ func (b *Ball) CheckObstacleCollision(o Obstacle) bool {
 
 		// Hitting the obstacle in the top
 		if bh > o.y && b.y < o.y {
-			b.dx *= -1
 			b.dy *= -1
 			return true
 		}
@@ -107,7 +106,6 @@ func (b *Ball) CheckObstacleCollision(o Obstacle) bool {
 
 		// Hitting the obstacle in the bottom
 		if b.y < (oh) && bh > oh {
-			b.dx *= -1
 			b.dy *= -1
 			return true
 		}
