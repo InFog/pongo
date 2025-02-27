@@ -89,3 +89,34 @@ func (b *Ball) CheckPaddleCollision(p Paddle) bool {
 
 	return false
 }
+
+func (b *Ball) CheckObstacleCollision(o Obstacle) bool {
+	bw := b.x + (b.radius * 2)
+
+	if bw >= o.x && b.x <= o.x+o.width {
+		bh := b.y + (b.radius * 2)
+
+		// Hitting the obstacle in the top
+		if bh > o.y && b.y < o.y {
+			b.dx *= -1
+			b.dy *= -1
+			return true
+		}
+
+		oh := o.y + o.height
+
+		// Hitting the obstacle in the bottom
+		if b.y < (oh) && bh > oh {
+			b.dx *= -1
+			b.dy *= -1
+			return true
+		}
+
+		if bh >= o.y && bh <= o.y+o.height {
+			b.dx *= -1
+			return true
+		}
+	}
+
+	return false
+}

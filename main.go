@@ -83,6 +83,12 @@ func (g *Game) Update() error {
 		if g.obstacles[i].y < lastObstacleY {
 			lastObstacleY = g.obstacles[i].y
 		}
+
+		if g.ball.CheckObstacleCollision(g.obstacles[i]) {
+			newEchoes = append(g.echoes, Echo{
+				g.ball.x, g.ball.y, g.ball.radius,
+			})
+		}
 	}
 
 	if lastObstacleY > canvasHeight/2 {
